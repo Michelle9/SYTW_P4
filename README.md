@@ -9,4 +9,5 @@ See
 * [Intridea Omniauth](https://github.com/intridea/omniauth)
 
 
-## Jhoanmary Pérez Fariña - Santiago Sainz Fernández
+## Jhoanmary Pérez Fariña  
+## Santiago Sainz Fernández
