@@ -11,9 +11,9 @@
       %p Acortar URL's
     .form
       %form{:action => "/", :method => "POST"}
-        %input#formu{:placeholder => "Introduce la URL", :type => "text"}
+        %input#formu{:placeholder => "Introduce la URL", :type => "text", :name => "url"}
           %br
-            %input#formu1{:placeholder => "Short URL (opcional)", :type => "text"}
+            %input#formu1{:placeholder => "Short URL (opcional)", :type => "text", :name => "opcional"}
               %br
                 %input#bottom{:type => "submit", :value => "Cortar"}
                   %i.fa.fa-scissors
