@@ -89,7 +89,7 @@ post '/' do
   if uri.is_a? URI::HTTP or uri.is_a? URI::HTTPS then
     begin
 	  if params[:opcional] == " "
-		@short_url = ShortenedUrl.first_or_create(:url => params[:url], :usuario => $mail)
+		@short_url = ShortenedUrl.first_or_create(:url => params[:url], :usuario => $mail) 
 	  else
 		@short_url = ShortenedUrl.first_or_create(:url => params[:url], :opcional => params[:opcional], :usuario => $mail)
 	  end
@@ -101,7 +101,7 @@ post '/' do
   else
     logger.info "Error! <#{params[:url]}> is not a valid URL"
   end
-  redirect '/'
+  #redirect '/'
 end
 
 #----------------------------------
