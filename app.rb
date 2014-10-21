@@ -45,7 +45,6 @@ get '/' do
 	  redirect 'auth/nologin' #No Login
 	end
   else
-#    %Q|<a href='/auth/google_oauth2'>Sign in with Google</a></BR><a href='/auth/nologin'>Not sign in with Google</a>|
 	erb :ind
   end
 end

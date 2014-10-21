@@ -1,8 +1,35 @@
 !!!
-%html
-    %body
-        =yield
-        %form(action="/" method="POST")
-            %label(for="url")
-            %input(type="text" name="url" id="myurl" autofocus size=100 accesskey="s")
-            %input(type="submit" value="Shorten")
+%html{:lang => "en"}
+  %head
+    %meta{:charset => "UTF-8"}
+      %title SyTW - P4
+      %link{:href => "/css/style.css", :rel => "stylesheet"}
+        / Insertar CSS
+        %link{:href => "http://netdna.bootstrapcdn.com/font-\nawesome/4.2.0/css/font-awesome.css", :rel => "stylesheet"}
+  %body
+    .tit
+      %p Acortar URL's
+    #form
+      %form{:action => "/", :method => "POST"}
+        %input#formu{:placeholder => "Introduce la URL", :type => "text"}
+          %br
+            %input#formu1{:placeholder => "Short URL (opcional)", :type => "text"}
+              %br
+                %input#bottom{:type => "submit", :value => "Cortar"}
+                  %i.fa.fa-scissors
+
+
+
+
+
+
+
+
+/ !!!
+/ %html
+/     %body
+/         =yield
+/         %form(action="/" method="POST")
+/             %label(for="url")
+/             %input(type="text" name="url" id="myurl" autofocus size=100 accesskey="s")
+/             %input(type="submit" value="Shorten")
