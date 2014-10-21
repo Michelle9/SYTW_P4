@@ -51,6 +51,19 @@ body{
 	
 }
 
+.form1{
+	background:#616161;
+	border:solid;
+	border-radius:5px;
+	width:600px;
+	height:100%;
+	margin:auto;
+	margin-top:90px;
+	font-size:30px;
+	padding-top:10px;
+	
+}
+
 #formu{
   width:450px;
   margin-left:20px;
