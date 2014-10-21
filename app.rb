@@ -65,7 +65,7 @@ get '/auth/:name/callback' do
 	  haml :index
 	end
   else
-	redirect '/auth/nologin'
+	redirect '/'
   end
 end
 
@@ -101,12 +101,12 @@ post '/' do
   else
     logger.info "Error! <#{params[:url]}> is not a valid URL"
   end
-
-  if @auth then
-	redirect '/auth/:name/callback'
-  else
-    redirect '/auth/nologin'
-  end
+  redirect '/'
+#   if @auth then
+# 	redirect '/auth/:name/callback'
+#   else
+#     redirect '/auth/nologin'
+#   end
 end
 
 #----------------------------------
