@@ -38,7 +38,7 @@ body{
 }
 
 
-#form{
+.form{
 	background:#616161;
 	border:solid;
 	border-radius:5px;
@@ -88,4 +88,8 @@ body{
   background:linear-gradient(to right, #3D7EAA, #FFE47A);
   font-size:20px;
   
+}
+
+#respuesta{
+  margin-left:250px;
 }

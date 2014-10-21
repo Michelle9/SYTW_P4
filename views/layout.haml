@@ -9,7 +9,7 @@
   %body
     .tit
       %p Acortar URL's
-    #form
+    .form
       %form{:action => "/", :method => "POST"}
         %input#formu{:placeholder => "Introduce la URL", :type => "text"}
           %br
@@ -17,7 +17,15 @@
               %br
                 %input#bottom{:type => "submit", :value => "Cortar"}
                   %i.fa.fa-scissors
-
+    .form
+      %p#respuesta URL'S
+		=yield
+      
+    #footer
+      %p
+        %b © SYTW
+        \- Práctica 4 © - Realizado por:
+        %b Jhoanmary Prz Fariña y Santiago Sainz Fernández
 
 
 
