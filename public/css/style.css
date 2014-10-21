@@ -1,0 +1,38 @@
+body{
+ background:linear-gradient(to right, #3D7EAA, #FFE47A); 
+}
+
+#contenido{
+	background:#616161;
+	border:solid;
+	border-radius:5px;
+	width:400px;
+	height:60px;
+	margin:auto;
+	margin-top:90px;
+	text-align:center;
+	font-size:30px;
+	padding-top:10px;
+	
+}
+
+
+#footer{
+  width:700px;
+  text-align:center;
+  margin-top:500px;
+  margin:auto;
+  padding-top:100px;
+}
+
+.tit{
+  text-align:center;
+  width:600px;
+  margin:auto;
+  font-size:30px;
+  border:solid;
+  border-radius:50px;
+  border-top-left-radius:0;
+  border-bottom-right-radius:0;
+  margin-top:20px;
+}
