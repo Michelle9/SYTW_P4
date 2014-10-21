@@ -40,13 +40,13 @@ $mail = "pepito@delospalotes"
 #----------------------------------
 
 get '/' do
-  if @auth then
-	begin
-	  redirect 'auth/nologin' #No Login
-	end
-  else
+#   if @auth then
+# 	begin
+# 	  redirect 'auth/nologin' #No Login
+# 	end
+#   else
 	erb :ind
-  end
+#   end
 end
 
 
@@ -74,7 +74,7 @@ end
 #----------------------------------
 
 get '/auth/nologin' do
-  puts "inside get '/': #{params}"
+  puts "inside get '/': #{params}" 
   @list = ShortenedUrl.all(:order => [ :id.asc ], :limit => 20, :usuario => " ")
   # in SQL => SELECT * FROM "ShortenedUrl" ORDER BY "id" ASC
   haml :index
@@ -102,12 +102,13 @@ post '/' do
     logger.info "Error! <#{params[:url]}> is not a valid URL"
   end
 
-  redirect '/'
-#   if @auth then
-# 	redirect '/auth/:name/callback'
-#   else
-#     redirect '/auth/nologin'
-#   end
+#   redirect '/'
+  if @auth then
+	redirect '/auth/:name/callback'
+  else
+    redirect '/auth/nologin'
+  end
+end
 
 
 #----------------------------------
