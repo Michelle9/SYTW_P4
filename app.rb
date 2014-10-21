@@ -101,13 +101,14 @@ post '/' do
   else
     logger.info "Error! <#{params[:url]}> is not a valid URL"
   end
+
   redirect '/'
 #   if @auth then
 # 	redirect '/auth/:name/callback'
 #   else
 #     redirect '/auth/nologin'
 #   end
-end
+
 
 #----------------------------------
 
