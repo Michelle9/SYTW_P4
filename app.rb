@@ -35,16 +35,17 @@ DataMapper.finalize
 DataMapper.auto_upgrade!
 
 Base = 36
+$mail = "pepito@delospalotes"
 
 #----------------------------------
 
 get '/' do
   if @auth then
 	begin
-	  redirect 'auth/failure' #No Login
+	  redirect 'auth/nologin' #No Login
 	end
   else
-   %Q|<a href='/auth/google_oauth2'>Sign in with Google</a></BR><a href='/auth/failure'>Not sign in with Google</a>|  
+   %Q|<a href='/auth/google_oauth2'>Sign in with Google</a></BR><a href='/auth/nologin'>Not sign in with Google</a>|  
   end
 end
 
@@ -54,19 +55,27 @@ end
 #----------------------------------
 
 get '/auth/:name/callback' do
-  puts "inside get '/': #{params}"
-  @list = ShortenedUrl.all(:order => [ :id.asc ], :limit => 20)
-  # in SQL => SELECT * FROM "ShortenedUrl" ORDER BY "id" ASC
-  haml :index
+  @auth = request.env['omniauth.auth']
+  $mail = @auth['info'].mail
+  if @auth then
+	begin
+	  puts "inside get '/': #{params}"
+	  @list = ShortenedUrl.all(:order => [ :id.asc ], :limit => 20, :usuario => $mail)
+	  # in SQL => SELECT * FROM "ShortenedUrl" ORDER BY "id" ASC
+	  haml :index
+	end
+  else
+	redirect '/auth/nologin'
+  end
 end
 
 
 
 #----------------------------------
 
-get 'auth/failure' do
+get '/auth/nologin' do
   puts "inside get '/': #{params}"
-  @list = ShortenedUrl.all(:order => [ :id.asc ], :limit => 20)
+  @list = ShortenedUrl.all(:order => [ :id.asc ], :limit => 20, :usuario => " ")
   # in SQL => SELECT * FROM "ShortenedUrl" ORDER BY "id" ASC
   haml :index
 end
@@ -79,7 +88,11 @@ post '/' do
   uri = URI::parse(params[:url])
   if uri.is_a? URI::HTTP or uri.is_a? URI::HTTPS then
     begin
-      @short_url = ShortenedUrl.first_or_create(:url => params[:url])
+	  if params[:to] == " "
+		@short_url = ShortenedUrl.first_or_create(:url => params[:url], :usuario => $mail)
+	  else
+		@short_url = ShortenedUrl.first_or_create(:url => params[:url], :to => params[:to], :usuario => $mail)
+	  end
     rescue Exception => e
       puts "EXCEPTION!!!!!!!!!!!!!!!!!!!"
       pp @short_url
@@ -96,7 +109,7 @@ end
 get '/:shortened' do
   puts "inside get '/:shortened': #{params}"
   short_url = ShortenedUrl.first(:id => params[:shortened].to_i(Base))
-
+  to_url = ShortenedUrl.first(:to => params[:shortened])
   # HTTP status codes that start with 3 (such as 301, 302) tell the
   # browser to go look for that resource in another location. This is
   # used in the case where a web page has moved to another location or
