@@ -1,4 +1,4 @@
-#!/usr/bin/env ruby
+#/usr/bin/env ruby
 require 'rubygems'
 require 'sinatra'
 require 'sinatra/reloader' if development?
@@ -9,9 +9,9 @@ require 'pp'
 require 'data_mapper'
 require 'omniauth-oauth2'
 require 'omniauth-google-oauth2'
-require 'pry'
+# require 'pry'
 require 'bundler/setup'
-require 'erubis'
+# require 'erubis'
 
 use OmniAuth::Builder do
   config = YAML.load_file 'config/config.yml'
@@ -44,7 +44,7 @@ get '/' do
 	  redirect 'auth/failure' #No Login
 	end
   else
-   %Q|<a href='/auth/google_oauth2'>Sign in with Google</a>|  
+   %Q|<a href='/auth/google_oauth2'>Sign in with Google</a></BR><a href='/auth/failure'>Not sign in with Google</a>|  
   end
 end
 
@@ -54,18 +54,13 @@ end
 #----------------------------------
 
 get '/auth/:name/callback' do
-  @auth = request.env['omniauth.auth']
-  $nombre = @auth['info'].email
-  if @auth then
-	begin
-	  puts "inside get '/': #{params}"
-	  @list = ShortenedUrl.all(:order => [ :id.asc ], :limit => 20)
-	  # in SQL => SELECT * FROM "ShortenedUrl" ORDER BY "id" ASC
-	  haml :index
-	end
-  else
-	redirect 'auth/failure' #No Login
+  puts "inside get '/': #{params}"
+  @list = ShortenedUrl.all(:order => [ :id.asc ], :limit => 20)
+  # in SQL => SELECT * FROM "ShortenedUrl" ORDER BY "id" ASC
+  haml :index
 end
+
+
 
 #----------------------------------
 
