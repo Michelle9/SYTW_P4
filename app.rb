@@ -7,6 +7,20 @@ require 'uri'
 require 'pp'
 #require 'socket'
 require 'data_mapper'
+require 'omniauth-oauth2'
+require 'omniauth-google-oauth2'
+require 'pry'
+require 'bundler/setup'
+require 'erubis'
+
+use OmniAuth::Builder do
+  config = YAML.load_file 'config/config.yml'
+  provider :google_oauth2, config['identifier'], config['secret']
+end
+
+enable :sessions
+set :session_secret, '*&(^#234a)'
+
 
 DataMapper.setup( :default, ENV['DATABASE_URL'] || 
                             "sqlite3://#{Dir.pwd}/my_shortened_urls.db" )
@@ -22,12 +36,48 @@ DataMapper.auto_upgrade!
 
 Base = 36
 
+#----------------------------------
+
 get '/' do
+  if @auth then
+	begin
+	  redirect 'auth/failure' #No Login
+	end
+  else
+   %Q|<a href='/auth/google_oauth2'>Sign in with Google</a>|  
+  end
+end
+
+
+#----------------------------------
+
+#----------------------------------
+
+get '/auth/:name/callback' do
+  @auth = request.env['omniauth.auth']
+  $nombre = @auth['info'].email
+  if @auth then
+	begin
+	  puts "inside get '/': #{params}"
+	  @list = ShortenedUrl.all(:order => [ :id.asc ], :limit => 20)
+	  # in SQL => SELECT * FROM "ShortenedUrl" ORDER BY "id" ASC
+	  haml :index
+	end
+  else
+	redirect 'auth/failure' #No Login
+end
+
+#----------------------------------
+
+get 'auth/failure' do
   puts "inside get '/': #{params}"
   @list = ShortenedUrl.all(:order => [ :id.asc ], :limit => 20)
   # in SQL => SELECT * FROM "ShortenedUrl" ORDER BY "id" ASC
   haml :index
 end
+  
+
+#---------------------------------
 
 post '/' do
   puts "inside post '/': #{params}"
@@ -46,6 +96,8 @@ post '/' do
   redirect '/'
 end
 
+#----------------------------------
+
 get '/:shortened' do
   puts "inside get '/:shortened': #{params}"
   short_url = ShortenedUrl.first(:id => params[:shortened].to_i(Base))
@@ -55,7 +107,11 @@ get '/:shortened' do
   # used in the case where a web page has moved to another location or
   # is no longer at the original location. The two most commonly used
   # redirection status codes are 301 Move Permanently and 302 Found.
-  redirect short_url.url, 301
+  if to_url
+	redirect short_url.url, 301
+  else
+	redirect short_url.url, 301
+  end
 end
 
 error do haml :index end
