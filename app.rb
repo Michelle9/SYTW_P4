@@ -35,18 +35,15 @@ DataMapper.finalize
 DataMapper.auto_upgrade!
 
 Base = 36
-$mail = "pepito@delospalotes"
+$mail = ""
 
 #----------------------------------
 
 get '/' do
-  if @auth then
-	begin
-	  redirect '/auth/:name/callback'
-	end
-  else
-	erb :index
-  end
+  puts "inside get '/': #{params}" 
+  @list = ShortenedUrl.all(:order => [ :id.asc ], :limit => 20, :usuario => $mail)
+  # in SQL => SELECT * FROM "ShortenedUrl" ORDER BY "id" ASC
+  haml :index
 end
 
 
@@ -62,10 +59,10 @@ get '/auth/:name/callback' do
 	  puts "inside get '/': #{params}"
 	  @list = ShortenedUrl.all(:order => [ :id.asc ], :limit => 20, :usuario => $mail)
 	  # in SQL => SELECT * FROM "ShortenedUrl" ORDER BY "id" ASC
-	  haml :inde
+	  haml :index
 	end
   else
-	redirect '/'
+	redirect '/nologin'
   end
 end
 
@@ -73,11 +70,12 @@ end
 
 #----------------------------------
 
-get '/auth/nologin' do
+get '/nologin' do
   puts "inside get '/': #{params}" 
+  $mail = ""
   @list = ShortenedUrl.all(:order => [ :id.asc ], :limit => 20, :usuario => " ")
   # in SQL => SELECT * FROM "ShortenedUrl" ORDER BY "id" ASC
-  haml :inde
+  haml :index
 end
   
 
@@ -129,4 +127,4 @@ get '/:shortened' do
   end
 end
 
-error do haml :inde end
+error do haml :index end
