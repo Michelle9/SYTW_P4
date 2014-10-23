@@ -35,14 +35,21 @@ DataMapper.finalize
 DataMapper.auto_upgrade!
 
 Base = 36
-$mail = ""
 
 #----------------------------------
 
 get '/' do
-  puts "inside get '/': #{params}" 
-  @list = ShortenedUrl.all(:order => [ :id.asc ], :limit => 20, :usuario => $mail)
+  puts "inside get '/': #{params}"
+  if session[:email] then
+	begin
+	  puts "inside get '/': #{params}"
+	  @list = ShortenedUrl.all(:order => [ :id.asc ], :limit => 20, :usuario => session[:email])
+	  # in SQL => SELECT * FROM "ShortenedUrl" ORDER BY "id" ASC
+	end
+  else
+	@list = ShortenedUrl.all(:order => [ :id.asc ], :limit => 20, :usuario => "")
   # in SQL => SELECT * FROM "ShortenedUrl" ORDER BY "id" ASC
+  end
   haml :index
 end
 
@@ -52,30 +59,31 @@ end
 #----------------------------------
 
 get '/auth/:name/callback' do
+#   session[:auth] = @auth = request.env['omiauth.auth']
+#   session[:email] = @auth['info'].email
+#   if session[:auth] then
   @auth = request.env['omniauth.auth']
-  $mail = @auth['info'].mail
-  if @auth then
+  session[:name] = @auth['info'].name
+  session[:email] = @auth['info'].email
+  if session[:email] then
 	begin
 	  puts "inside get '/': #{params}"
-	  @list = ShortenedUrl.all(:order => [ :id.asc ], :limit => 20, :usuario => $mail)
+	  @list = ShortenedUrl.all(:order => [ :id.asc ], :limit => 20, :usuario => session[:email])
 	  # in SQL => SELECT * FROM "ShortenedUrl" ORDER BY "id" ASC
-	  haml :index
 	end
   else
 	redirect '/nologin'
   end
+  haml :index
 end
 
 
 
 #----------------------------------
 
-get '/nologin' do
-  puts "inside get '/': #{params}" 
-  $mail = ""
-  @list = ShortenedUrl.all(:order => [ :id.asc ], :limit => 20, :usuario => " ")
-  # in SQL => SELECT * FROM "ShortenedUrl" ORDER BY "id" ASC
-  haml :index
+get '/nologin' do  
+  session.clear
+  redirect '/'
 end
   
 
@@ -87,9 +95,9 @@ post '/' do
   if uri.is_a? URI::HTTP or uri.is_a? URI::HTTPS then
     begin
 	  if params[:opcional] == " "
-		@short_url = ShortenedUrl.first_or_create(:url => params[:url], :usuario => $mail) 
+		@short_url = ShortenedUrl.first_or_create(:url => params[:url], :usuario => session[:email]) 
 	  else
-		@short_url = ShortenedUrl.first_or_create(:url => params[:url], :opcional => params[:opcional], :usuario => $mail)
+		@short_url = ShortenedUrl.first_or_create(:url => params[:url], :opcional => params[:opcional], :usuario => session[:email])
 	  end
     rescue Exception => e
       puts "EXCEPTION!!!!!!!!!!!!!!!!!!!"
