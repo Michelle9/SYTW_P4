@@ -1,5 +1,5 @@
 body{
- background:linear-gradient(to right, #3D7EAA, #FFE47A); 
+ background:linear-gradient(to right, #616161, #9bc5c3); 
 }
 
 .contenido{
@@ -87,6 +87,7 @@ body{
   margin-left:20px;
   height:20px;
   padding-left:10px;
+  border-radius:5px;
   
 }
 
@@ -95,6 +96,7 @@ body{
   margin-left:20px;
   height:20px;
   padding-left:10px;
+  border-radius:5px;
   
 }
 
@@ -116,7 +118,7 @@ body{
   margin-top:30px;
   border-radius:5px;
   margin-left:250px;
-  background:linear-gradient(to right, #3D7EAA, #FFE47A);
+  background:linear-gradient(to right, #616161, #9bc5c3);
   font-size:20px;
   
 }
