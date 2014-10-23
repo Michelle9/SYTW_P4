@@ -18,9 +18,24 @@ describe "SYTW P4 - page" do
 	assert last_response.ok?
   end  
   
-  it "should return title" do
-	get '/'
-	assert_match "<title> SyTW - P4 </title>", last_response.body
-  end
-  
+end
+
+describe "shortened urls" do
+
+	before :all do
+		@user = "pepito"
+		@url = "http://www.github.com"
+		@opcional = "git"
+		@short_url = ShortenedUrl.first_or_create(:usuario => @user, :url => @url, :opcional => @opcional)
+		@short_url1 = ShortenedUrl.first(:opcional => @opcional)
+	end
+
+	it "Should be in the bbdd" do
+		assert @opcional, @short_url1.opcional
+	end
+
+	it "Should be the user" do
+		assert 'pepito', @short_url1.usuario
+	end
+
 end
