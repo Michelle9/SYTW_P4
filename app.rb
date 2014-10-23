@@ -39,6 +39,7 @@ Base = 36
 #----------------------------------
 
 get '/' do
+  @mail = nil
   puts "inside get '/': #{params}"
   if session[:email] then
 	begin
@@ -47,7 +48,7 @@ get '/' do
 	  # in SQL => SELECT * FROM "ShortenedUrl" ORDER BY "id" ASC
 	end
   else
-	@list = ShortenedUrl.all(:order => [ :id.asc ], :limit => 20, :usuario => "")
+	@list = ShortenedUrl.all(:order => [ :id.asc ], :limit => 20, :usuario => session[:email])
   # in SQL => SELECT * FROM "ShortenedUrl" ORDER BY "id" ASC
   end
   haml :index
@@ -67,6 +68,7 @@ get '/auth/:name/callback' do
   session[:email] = @auth['info'].email
   if session[:email] then
 	begin
+	  @mail = session[:email]
 	  puts "inside get '/': #{params}"
 	  @list = ShortenedUrl.all(:order => [ :id.asc ], :limit => 20, :usuario => session[:email])
 	  # in SQL => SELECT * FROM "ShortenedUrl" ORDER BY "id" ASC

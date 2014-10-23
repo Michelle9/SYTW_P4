@@ -25,7 +25,10 @@
                 %input#bottom{:type => "submit", :value => "Cortar"}
                   %i.fa.fa-scissors.fa-rotate-270
     .form1
-      %p#respuesta URL'S
+      -if (session[:email] !=nil)
+        %p#respuesta URL'S de #{@mail}
+      -else
+        %p#respuesta URL'S
       =yield
     #footer
       %p
