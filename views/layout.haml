@@ -9,13 +9,13 @@
   %body
     .tit
       %p Acortar URL's
-    .contenido
-      %i.fa.fa-google
-      %a{:href => "/auth/google_oauth2"} Sign in with Google
-    %br
+    .nav
+      .contenido
+        %i.fa.fa-google
+        %a{:href => "/auth/google_oauth2"} SingIn
       .contenido1
-        %i.fa.fa-power-off
         %a{:href => "/nologin"} Logout
+        %i.fa.fa-power-off
     .form
       %form{:action => "/", :method => "POST"}
         %input#formu{:placeholder => "Introduce la URL", :type => "text", :name => "url"}
